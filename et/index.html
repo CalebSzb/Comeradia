@@ -11,43 +11,8 @@
 <body>
 
 <header>
-  <a class="header-brand" href="/et/" aria-label="Comeradia Avaleht">
-    <svg class="coa-wrap" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <g stroke="#c9a84c" stroke-width="1.4" stroke-linecap="round">
-        <path d="M28 52 Q18 42 14 30" /><path d="M28 52 Q16 48 10 38" />
-        <path d="M28 52 Q20 54 14 48" /><path d="M28 52 Q22 58 18 66" />
-      </g>
-      <g stroke="#c9a84c" stroke-width="1.4" stroke-linecap="round">
-        <path d="M72 52 Q82 42 86 30" /><path d="M72 52 Q84 48 90 38" />
-        <path d="M72 52 Q80 54 86 48" /><path d="M72 52 Q78 58 82 66" />
-      </g>
-      <g stroke="#e8d08a" stroke-width="2.2" stroke-linecap="round">
-        <line x1="32" y1="30" x2="62" y2="54" />
-        <line x1="56" y1="50" x2="66" y2="58" />
-        <line x1="66" y1="58" x2="64" y2="62" />
-        <line x1="64" y1="62" x2="68" y2="62" />
-        <line x1="46" y1="42" x2="46" y2="52" />
-        <line x1="32" y1="30" x2="30" y2="34" />
-      </g>
-      <g stroke="#e8d08a" stroke-linecap="round">
-        <circle cx="42" cy="54" r="7" stroke-width="2" />
-        <path d="M46 48 Q52 42 58 34" stroke-width="1.6" />
-        <circle cx="58" cy="33" r="2" fill="#c9a84c" stroke="none" />
-        <line x1="37" y1="52" x2="47" y2="56" stroke-width="1.2" />
-      </g>
-      <g fill="#c9a84c" opacity=".92">
-        <ellipse cx="50" cy="76" rx="7" ry="5" />
-        <circle cx="50" cy="69" r="3.5" />
-        <path d="M53 69 L56 68.5 L55 70 Z" />
-        <ellipse cx="57" cy="68" rx="2.5" ry="1" transform="rotate(-20 57 68)" fill="#3ba55d" />
-        <path d="M43 76 Q36 70 34 64 Q40 68 43 74 Z" />
-        <path d="M57 76 Q64 70 66 64 Q60 68 57 74 Z" />
-        <path d="M46 81 Q45 86 43 88" stroke="#c9a84c" stroke-width="1.4" stroke-linecap="round" fill="none"/>
-        <path d="M50 82 Q50 87 50 89" stroke="#c9a84c" stroke-width="1.4" stroke-linecap="round" fill="none"/>
-        <path d="M54 81 Q55 86 57 88" stroke="#c9a84c" stroke-width="1.4" stroke-linecap="round" fill="none"/>
-      </g>
-      <circle cx="50" cy="50" r="46" stroke="#c9a84c" stroke-width=".8" stroke-dasharray="4 3" opacity=".4" />
-    </svg>
+  <a class="header-brand" href="../" aria-label="Comeradia Avaleht">
+    <img class="logo-img" src="../assets/image.webp" alt="Comeradia Coat of Arms" />
     <div class="logo">
       <span class="logo-title">Comeradia</span>
       <span class="logo-sub">Seltsimehe Konföderatsioon</span>
@@ -60,11 +25,10 @@
   </nav>
 </header>
 
-<!-- ── NOTICEBOARD ───────────────────────────────────────────────────────── -->
 <div class="noticeboard" role="note">
   <div class="noticeboard-pin" aria-hidden="true">📌</div>
   <div class="noticeboard-inner">
-    <span class="noticeboard-from">Arendajalt — Jhoule</span>
+    <span class="noticeboard-from">Arendajalt — Caleb</span>
     <p class="noticeboard-msg">Mul pole üldse ideid, mida sellele veebilehele panna. Vajan teie abi, poisid. Tänan.</p>
   </div>
 </div>
@@ -72,99 +36,52 @@
 <main>
 
   <nav class="tab-nav" aria-label="Sektsioonid">
-    <button class="tab-btn active" data-tab="tab-news">🌍 Regionaalsed uudised</button>
-    <button class="tab-btn"        data-tab="tab-clips">📡 Globaalsed klipid</button>
+    <button class="tab-btn active" data-tab="tab-behead">⚔️ Igapäevased hukkamised</button>
+    <button class="tab-btn"        data-tab="tab-members">👥 Liikmed</button>
     <button class="tab-btn"        data-tab="tab-vault">🔍 Uuri Esti nime</button>
   </nav>
 
   <!-- TAB 1 -->
-  <section id="tab-news" class="tab-panel active" aria-label="Regionaalsed uudised">
-
-    <div class="cards-grid">
-
-      <article class="news-card">
-        <span class="tag">Austraalia</span>
-        <h3>Melbourne'i depešš</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
-        <div class="card-meta"><div class="live-dot"></div> Otseülekanne · Melbourne, AU</div>
-      </article>
-
-      <article class="news-card">
-        <span class="tag">Soome</span>
-        <h3>Helsingi ülevaade</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-        <div class="card-meta"><div class="live-dot"></div> Otseülekanne · Helsingi, FI</div>
-      </article>
-
-      <article class="news-card">
-        <span class="tag">Lõuna-Aafrika</span>
-        <h3>Kaplinna raport</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-        <div class="card-meta"><div class="live-dot"></div> Otseülekanne · Kapilinn, ZA</div>
-      </article>
-
-      <article class="news-card">
-        <span class="tag">Eesti</span>
-        <h3>Tallinna kroonika</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mollis pretium lorem primis senectus habitasse dolor.</p>
-        <div class="card-meta"><div class="live-dot"></div> Otseülekanne · Tallinn, EE</div>
-      </article>
-
+  <section id="tab-behead" class="tab-panel active" aria-label="Igapäevased hukkamised">
+    <div class="behead-header">
+      <h2>⚔️ Igapäevased hukkamised</h2>
+      <div id="behead-countdown" class="behead-countdown"></div>
     </div>
+    <div class="behead-feed" id="beheading-feed"></div>
   </section>
 
   <!-- TAB 2 -->
-  <section id="tab-clips" class="tab-panel" aria-label="Globaalsed klipid">
-    <div class="clips-header">
-      <h2>Saatevoog</h2>
-      <span class="live-badge"><span class="dot"></span>Otseülekanne</span>
-    </div>
-    <div class="clips-feed">
-      <div class="clip-item">
-        <span class="clip-index">#001</span>
-        <div class="clip-body">
-          <span class="clip-region">Lõuna-Aafrika</span>
-          <div class="clip-headline">Lõunapoolkera bülletään — Hommikuväljanne</div>
-          <div class="clip-copy">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Praesent commodo cursus magna.</div>
-        </div>
-        <span class="clip-time">08:14 UTC</span>
+  <section id="tab-members" class="tab-panel" aria-label="Liikmed">
+    <div class="members-grid">
+
+      <div class="member-card" data-member="Caleb">
+        <div class="member-avatar" style="background: linear-gradient(135deg,#7c5cfc,#4a3abf)">C</div>
+        <div class="member-flag">🇿🇦</div>
+        <div class="member-name">Caleb</div>
+        <div class="member-role">Arendaja ja asutaja</div>
       </div>
-      <div class="clip-item">
-        <span class="clip-index">#002</span>
-        <div class="clip-body">
-          <span class="clip-region">Eesti</span>
-          <div class="clip-headline">Balti ülevaade — Infrastruktuur</div>
-          <div class="clip-copy">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</div>
-        </div>
-        <span class="clip-time">09:02 UTC</span>
+
+      <div class="member-card" data-member="Rosa">
+        <div class="member-avatar" style="background: linear-gradient(135deg,#43b581,#2d7a56)">R</div>
+        <div class="member-flag">🇫🇮</div>
+        <div class="member-name">Rosa</div>
+        <div class="member-role">Suur Herpetoloog</div>
       </div>
-      <div class="clip-item">
-        <span class="clip-index">#003</span>
-        <div class="clip-body">
-          <span class="clip-region">Austraalia</span>
-          <div class="clip-headline">Vaikse ookeani digest — Kaubandus</div>
-          <div class="clip-copy">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
-        </div>
-        <span class="clip-time">10:47 UTC</span>
+
+      <div class="member-card" data-member="Jacob">
+        <div class="member-avatar" style="background: linear-gradient(135deg,#f04747,#a83030)">J</div>
+        <div class="member-flag">🇦🇺</div>
+        <div class="member-name">Jacob</div>
+        <div class="member-role">Seltsimees</div>
       </div>
-      <div class="clip-item">
-        <span class="clip-index">#004</span>
-        <div class="clip-body">
-          <span class="clip-region">Soome</span>
-          <div class="clip-headline">Põhjamaade raport — Kliima ja poliitika</div>
-          <div class="clip-copy">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mollis pretium lorem primis senectus habitasse dolor. Quisque aliquet velit sit amet libero facilisis lobortis.</div>
-        </div>
-        <span class="clip-time">11:33 UTC</span>
+
+      <div class="member-card" data-member="Est">
+        <div class="member-avatar" style="background: linear-gradient(135deg,#faa61a,#b87512)">?</div>
+        <div class="member-flag">🇪🇪</div>
+        <div class="member-name">Est</div>
+        <div class="member-role">Mõistatus</div>
       </div>
-      <div class="clip-item">
-        <span class="clip-index">#005</span>
-        <div class="clip-body">
-          <span class="clip-region">Globaalne</span>
-          <div class="clip-headline">Kiirteade: Comeradia võrk — Hädaedastus</div>
-          <div class="clip-copy">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.</div>
-        </div>
-        <span class="clip-time">12:00 UTC</span>
-      </div>
+
     </div>
   </section>
 
@@ -189,27 +106,40 @@
 
 <footer>
   <span class="footer-label">🌐 Live globaalne staatus</span>
-  <div class="clock-widget" aria-label="Kellad ja temperatuur">
+  <div class="clock-widget" aria-label="Kellad ja ilm">
+
     <div class="clock-item">
       <span class="clock-city">Kapilinn</span>
       <span class="clock-time" id="clock-za">--:--:--</span>
-      <span class="clock-temp">16°C</span>
+      <span class="clock-condition">⛅ Vahelduv pilvisus</span>
+      <span class="clock-temp">16°C · Tundub 14°C</span>
+      <div class="clock-details"><span>💧 72%</span><span>💨 18 km/h</span></div>
     </div>
+
     <div class="clock-item">
       <span class="clock-city">Tallinn</span>
       <span class="clock-time" id="clock-et">--:--:--</span>
-      <span class="clock-temp">15°C</span>
+      <span class="clock-condition">🌧 Kerge vihm</span>
+      <span class="clock-temp">15°C · Tundub 12°C</span>
+      <div class="clock-details"><span>💧 81%</span><span>💨 22 km/h</span></div>
     </div>
+
     <div class="clock-item">
       <span class="clock-city">Melbourne</span>
       <span class="clock-time" id="clock-au">--:--:--</span>
-      <span class="clock-temp">12°C</span>
+      <span class="clock-condition">🌤 Enamasti selge</span>
+      <span class="clock-temp">12°C · Tundub 10°C</span>
+      <div class="clock-details"><span>💧 65%</span><span>💨 14 km/h</span></div>
     </div>
+
     <div class="clock-item">
-      <span class="clock-city">Helsingi</span>
+      <span class="clock-city">Raseborg</span>
       <span class="clock-time" id="clock-fi">--:--:--</span>
-      <span class="clock-temp">14°C</span>
+      <span class="clock-condition">🌥 Pilves</span>
+      <span class="clock-temp">14°C · Tundub 11°C</span>
+      <div class="clock-details"><span>💧 78%</span><span>💨 20 km/h</span></div>
     </div>
+
   </div>
 </footer>
 
