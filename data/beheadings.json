@@ -1,11 +1,15 @@
 {
   "counts": {
-    "Caleb": 0,
+    "Caleb": 1,
     "Rosa": 0,
     "Jacob": 1,
     "Est": 0
   },
   "log": [
+    {
+      "name": "Caleb",
+      "ts": "2026-06-12T22:25:08.045Z"
+    },
     {
       "name": "Jacob",
       "ts": "2026-06-12T20:59:06.508Z"
