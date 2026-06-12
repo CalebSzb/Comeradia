@@ -8,34 +8,18 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
   });
 });
 
-/* ─── DAILY BEHEADINGS ───────────────────────────────────────────────────── */
-const MEMBERS = ['Caleb', 'Rosa', 'Jacob', 'Est'];
-
+/* ─── BEHEADINGS — read from data/beheadings.json (written by GitHub Actions) */
 const BEHEAD_PHRASE = {
   en: 'has been beheaded.',
   ru: 'был обезголовлен.',
   et: 'pea lõigati maha.',
 };
 
-const beheadCounts = {
-  Caleb: parseInt(localStorage.getItem('behead_Caleb') || '0'),
-  Rosa:  parseInt(localStorage.getItem('behead_Rosa')  || '0'),
-  Jacob: parseInt(localStorage.getItem('behead_Jacob') || '0'),
-  Est:   parseInt(localStorage.getItem('behead_Est')   || '0'),
-};
-
-let beheadLog = JSON.parse(localStorage.getItem('behead_log') || '[]');
-// each log entry: { name, ts } — ts is ISO timestamp
-
 function getLang() {
   return document.documentElement.lang || 'en';
 }
 
-function randomMember() {
-  return MEMBERS[Math.floor(Math.random() * MEMBERS.length)];
-}
-
-function formatCount(count) {
+function formatCount(name, count) {
   const lang = getLang();
   if (lang === 'ru') {
     const m10 = count % 10, m100 = count % 100;
@@ -47,7 +31,30 @@ function formatCount(count) {
   return `Beheaded ${count} Time${count === 1 ? '' : 's'}`;
 }
 
-function updateMemberBadge(name) {
+function renderFeedEntry(entry) {
+  const feed = document.getElementById('beheading-feed');
+  if (!feed) return;
+  const lang   = getLang();
+  const phrase = BEHEAD_PHRASE[lang] || BEHEAD_PHRASE.en;
+  const name   = typeof entry === 'string' ? entry : entry.name;
+  const ts     = entry.ts ? new Intl.DateTimeFormat([], {
+    timeZone: 'Australia/Melbourne',
+    hour: 'numeric', minute: '2-digit', hour12: true,
+  }).format(new Date(entry.ts)) + ' (Melbourne)' : '';
+
+  const div = document.createElement('div');
+  div.className = 'behead-entry';
+  div.innerHTML = `
+    <span class="behead-icon">⚔️</span>
+    <div class="behead-body">
+      <span class="behead-text"><strong>${name}</strong> ${phrase}</span>
+      ${ts ? `<span class="behead-ts">${ts}</span>` : ''}
+    </div>`;
+  feed.appendChild(div);
+}
+
+function renderMemberBadge(name, count) {
+  if (count <= 0) return;
   const card = document.querySelector(`.member-card[data-member="${name}"]`);
   if (!card) return;
   let badge = card.querySelector('.member-behead-count');
@@ -56,107 +63,57 @@ function updateMemberBadge(name) {
     badge.className = 'member-behead-count';
     card.appendChild(badge);
   }
-  badge.textContent = `⚔️ ${formatCount(beheadCounts[name])}`;
-  badge.classList.add('bump');
-  setTimeout(() => badge.classList.remove('bump'), 400);
+  badge.textContent = `⚔️ ${formatCount(name, count)}`;
 }
 
-function renderFeedEntry(entry, animate) {
+function applyData(data) {
+  // render feed (newest first — log is already stored newest-first)
   const feed = document.getElementById('beheading-feed');
-  if (!feed) return;
-  const lang   = getLang();
-  const phrase = BEHEAD_PHRASE[lang] || BEHEAD_PHRASE.en;
-  // support both old plain-string entries and new {name,ts} objects
-  const name   = typeof entry === 'string' ? entry : entry.name;
-  const ts     = typeof entry === 'string' ? null   : entry.ts;
-  const timeStr = ts ? new Intl.DateTimeFormat([], {
-    timeZone: 'Australia/Melbourne',
-    hour: 'numeric', minute: '2-digit', hour12: true,
-  }).format(new Date(ts)) + ' (Melbourne)' : '';
+  if (feed) feed.innerHTML = '';
+  (data.log || []).forEach(entry => renderFeedEntry(entry));
 
-  const div = document.createElement('div');
-  div.className = animate ? 'behead-entry new' : 'behead-entry';
-  div.innerHTML = `
-    <span class="behead-icon">⚔️</span>
-    <div class="behead-body">
-      <span class="behead-text"><strong>${name}</strong> ${phrase}</span>
-      ${timeStr ? `<span class="behead-ts">${timeStr}</span>` : ''}
-    </div>`;
-  feed.prepend(div);
-  if (animate) setTimeout(() => div.classList.remove('new'), 600);
+  // render member badges
+  Object.entries(data.counts || {}).forEach(([name, count]) => {
+    renderMemberBadge(name, count);
+  });
 }
 
-function addBeheading() {
-  const name = randomMember();
-  const ts   = new Date().toISOString();
-
-  beheadCounts[name]++;
-  localStorage.setItem(`behead_${name}`, beheadCounts[name]);
-
-  const logEntry = { name, ts };
-  beheadLog.unshift(logEntry);
-  if (beheadLog.length > 50) beheadLog.pop();
-  localStorage.setItem('behead_log', JSON.stringify(beheadLog));
-
-  renderFeedEntry(logEntry, true);
-  updateMemberBadge(name);
+// resolve the correct path to data/beheadings.json regardless of subfolder depth
+function dataPath() {
+  // pages at /ru/ or /et/ are one level deep — go up one
+  const depth = window.location.pathname.replace(/\/$/, '').split('/').length - 1;
+  // on GitHub Pages the root is at depth 1 (/<repo>/), subpages at depth 2
+  // locally depth varies; simplest heuristic: if pathname contains /ru/ or /et/ prepend ../
+  if (/\/(ru|et)(\/|$)/.test(window.location.pathname)) {
+    return '../data/beheadings.json';
+  }
+  return './data/beheadings.json';
 }
 
-// restore feed and badges on page load
-beheadLog.forEach(name => renderFeedEntry(name, false));
-MEMBERS.forEach(name => { if (beheadCounts[name] > 0) updateMemberBadge(name); });
-
-/* ─── CLOCK-BASED BEHEADING TRIGGER ─────────────────────────────────────── */
-// Fires once per hour on the exact hour in Melbourne time (every hour = beheading)
-let lastBeheadingHour = -1;
-
-/* ─── LIVE CLOCKS & WEATHER ──────────────────────────────────────────────── */
-const ZONES = [
-  { id: 'clock-za', tz: 'Africa/Johannesburg' },
-  { id: 'clock-et', tz: 'Europe/Tallinn'       },
-  { id: 'clock-au', tz: 'Australia/Melbourne'  },
-  { id: 'clock-fi', tz: 'Europe/Helsinki'      },
-];
-
-const melbourneFmt = new Intl.DateTimeFormat([], {
-  timeZone: 'Australia/Melbourne',
-  hour: 'numeric',
-  minute: '2-digit',
-  second: '2-digit',
-  hour12: false,
-});
-
-const displayFmt = tz => new Intl.DateTimeFormat([], {
-  timeZone: tz,
-  hour: 'numeric',
-  minute: '2-digit',
-  second: '2-digit',
-  hour12: true,
-});
-
-function tickClocks() {
-  const now  = new Date();
-
-  // update all clock displays
-  ZONES.forEach(z => {
-    const el = document.getElementById(z.id);
-    if (el) el.textContent = displayFmt(z.tz).format(now);
+fetch(dataPath() + '?t=' + Date.now())
+  .then(r => r.json())
+  .then(data => applyData(data))
+  .catch(() => {
+    // fallback for local file:// development — read from localStorage
+    const fallback = {
+      counts: {
+        Caleb: parseInt(localStorage.getItem('behead_Caleb') || '0'),
+        Rosa:  parseInt(localStorage.getItem('behead_Rosa')  || '0'),
+        Jacob: parseInt(localStorage.getItem('behead_Jacob') || '0'),
+        Est:   parseInt(localStorage.getItem('behead_Est')   || '0'),
+      },
+      log: JSON.parse(localStorage.getItem('behead_log') || '[]'),
+    };
+    applyData(fallback);
   });
 
-  // check Melbourne time for exact hour trigger
-  const parts  = melbourneFmt.formatToParts(now);
-  const hour   = parseInt(parts.find(p => p.type === 'hour').value);
-  const minute = parseInt(parts.find(p => p.type === 'minute').value);
-  const second = parseInt(parts.find(p => p.type === 'second').value);
-
-  if (minute === 0 && second === 0 && hour !== lastBeheadingHour) {
-    lastBeheadingHour = hour;
-    addBeheading();
-  }
-}
-
-tickClocks();
-setInterval(tickClocks, 1000);
+// re-fetch every 5 minutes so an open tab stays current without a reload
+setInterval(() => {
+  fetch(dataPath() + '?t=' + Date.now())
+    .then(r => r.json())
+    .then(data => applyData(data))
+    .catch(() => {});
+}, 5 * 60 * 1000);
 
 /* ─── VAULT DENIAL ───────────────────────────────────────────────────────── */
 const MESSAGES = [
@@ -178,3 +135,26 @@ document.getElementById('btn-vault')?.addEventListener('click', () => {
 
 document.getElementById('btn-dismiss')?.addEventListener('click', () => overlay.classList.remove('show'));
 overlay?.addEventListener('click', e => { if (e.target === overlay) overlay.classList.remove('show'); });
+
+/* ─── LIVE CLOCKS ────────────────────────────────────────────────────────── */
+const ZONES = [
+  { id: 'clock-za', tz: 'Africa/Johannesburg' },
+  { id: 'clock-et', tz: 'Europe/Tallinn'       },
+  { id: 'clock-au', tz: 'Australia/Melbourne'  },
+  { id: 'clock-fi', tz: 'Europe/Helsinki'      },
+];
+
+const displayFmt = tz => new Intl.DateTimeFormat([], {
+  timeZone: tz, hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true,
+});
+
+function tickClocks() {
+  const now = new Date();
+  ZONES.forEach(z => {
+    const el = document.getElementById(z.id);
+    if (el) el.textContent = displayFmt(z.tz).format(now);
+  });
+}
+
+tickClocks();
+setInterval(tickClocks, 1000);

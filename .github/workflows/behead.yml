@@ -1,0 +1,28 @@
+name: Hourly Beheading
+
+on:
+  schedule:
+    # Runs every hour at :00 — GitHub Actions uses UTC
+    - cron: '0 * * * *'
+  workflow_dispatch: # allow manual trigger from GitHub UI
+
+jobs:
+  behead:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Run beheading script
+        run: node scripts/behead.js
+
+      - name: Commit updated beheadings.json
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/beheadings.json
+          git diff --cached --quiet || git commit -m "⚔️ Hourly beheading [skip ci]"
+          git push
