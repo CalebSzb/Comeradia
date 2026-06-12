@@ -411,18 +411,6 @@ main { flex: 1; padding: 2rem; max-width: 1140px; margin: 0 auto; width: 100%; }
   padding: .15rem .55rem;
 }
 
-.behead-countdown {
-  font-family: 'Source Code Pro', monospace;
-  font-size: .85rem;
-  font-weight: 700;
-  letter-spacing: .08em;
-  color: var(--danger);
-  border: 1px solid rgba(255,85,102,.3);
-  background: rgba(255,85,102,.06);
-  border-radius: 6px;
-  padding: .35rem .9rem;
-  text-shadow: 0 0 8px rgba(255,85,102,.4);
-}
 
 .behead-feed {
   display: flex;
@@ -457,6 +445,12 @@ main { flex: 1; padding: 2rem; max-width: 1140px; margin: 0 auto; width: 100%; }
   filter: drop-shadow(0 0 4px rgba(255,85,102,.6));
 }
 
+.behead-body {
+  display: flex;
+  flex-direction: column;
+  gap: .2rem;
+}
+
 .behead-text {
   font-size: .98rem;
   color: var(--muted);
@@ -469,11 +463,11 @@ main { flex: 1; padding: 2rem; max-width: 1140px; margin: 0 auto; width: 100%; }
   letter-spacing: .04em;
 }
 
-.behead-time {
-  font-size: .7rem;
+.behead-ts {
+  font-size: .72rem;
   color: var(--muted);
   font-family: 'Source Code Pro', monospace;
-  white-space: nowrap;
+  opacity: .7;
 }
 
 /* ─── MEMBERS ────────────────────────────────────────────────────────────── */
