@@ -39,23 +39,14 @@
 <main>
 
   <nav class="tab-nav" aria-label="Sections">
-    <button class="tab-btn active" data-tab="tab-behead">⚔️ Daily Beheadings</button>
-    <button class="tab-btn"        data-tab="tab-members">👥 Members</button>
-    <button class="tab-btn"        data-tab="tab-vault">🔍 Find Out Est's Name</button>
+    <button class="tab-btn active" data-tab="tab-members">👥 Members</button>
+    <button class="tab-btn"        data-tab="tab-intake">📥 Intake Office</button>
+    <button class="tab-btn"        data-tab="tab-archive">📚 Library</button>
   </nav>
 
-  <!-- ── TAB 1: DAILY BEHEADINGS ──────────────────────────────────────── -->
-  <section id="tab-behead" class="tab-panel active" aria-label="Daily Beheadings">
-    <div class="behead-header">
-      <h2>⚔️ Daily Beheadings</h2>
-    </div>
-    <div class="behead-feed" id="beheading-feed"></div>
-  </section>
-
-  <!-- ── TAB 2: MEMBERS ───────────────────────────────────────────────── -->
-  <section id="tab-members" class="tab-panel" aria-label="Members">
+  <!-- ── TAB 1: MEMBERS ───────────────────────────────────────────────── -->
+  <section id="tab-members" class="tab-panel active" aria-label="Members">
     <div class="members-grid">
-
       <div class="member-card" data-member="Caleb">
         <div class="member-avatar" style="background: linear-gradient(135deg,#7c5cfc,#4a3abf)">C</div>
         <div class="member-flag">🇿🇦</div>
@@ -87,13 +78,19 @@
     </div>
   </section>
 
-  <!-- ── TAB 3: THE VAULT ──────────────────────────────────────────────── -->
-  <section id="tab-vault" class="tab-panel" aria-label="The Vault">
-    <div class="vault-terminal">
-      <div class="vault-icons" aria-hidden="true">🔒 ⚠️ 🔒 ⚠️ 🔒</div>
-      <div class="vault-title">Classified Data</div>
-      <div class="vault-sub">[ UNIQUE ESTONIAN FIRST NAME VAULT ]<br/>// SECURITY CLEARANCE: ULTRA-ENIGMA //</div>
-      <button id="btn-vault" class="btn-vault">⚡ Access Enigma Retrieval</button>
+  <!-- ── TAB 2: INTAKE OFFICE ────────────────────────────────────────── -->
+  <section id="tab-intake" class="tab-panel" aria-label="Intake Office">
+    <div class="intake-container" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px; text-align: center;">
+      <h2 style="margin-bottom: 25px;">📥 Intake Office</h2>
+      <a href="https://forms.gle/A4mvK2NWsHBbTmQE8" target="_blank" class="btn-vault">⚡ Open Submission Portal</a>
+      </div>
+  </section>
+
+  <!-- ── TAB 3: LIBRARY ────────────────────────────────────────────────── -->
+  <section id="tab-archive" class="tab-panel" aria-label="Library">
+    <div class="archive-container">
+      <h2>📚 The Library</h2>
+      <div id="archive-list" class="archive-list">Loading archives...</div>
     </div>
   </section>
 
@@ -121,7 +118,7 @@
     </div>
 
     <div class="clock-item">
-      <span class="clock-city">Tallinn</span>
+      <span class="clock-city">Antsla</span>
       <span class="clock-time" id="clock-et">--:--:--</span>
       <span class="clock-condition">🌧 Light Rain</span>
       <span class="clock-temp">15°C · Feels 12°C</span>
@@ -150,3 +147,4 @@
 <script src="script.js"></script>
 </body>
 </html>
+

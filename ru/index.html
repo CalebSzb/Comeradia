@@ -36,23 +36,14 @@
 <main>
 
   <nav class="tab-nav" aria-label="Разделы">
-    <button class="tab-btn active" data-tab="tab-behead">⚔️ Ежедневные казни</button>
-    <button class="tab-btn"        data-tab="tab-members">👥 Участники</button>
-    <button class="tab-btn"        data-tab="tab-vault">🔍 Узнать имя Эста</button>
+    <button class="tab-btn active" data-tab="tab-members">👥 Участники</button>
+    <button class="tab-btn"        data-tab="tab-intake">📥 Офис приема</button>
+    <button class="tab-btn"        data-tab="tab-archive">📚 Библиотека</button>
   </nav>
 
   <!-- TAB 1 -->
-  <section id="tab-behead" class="tab-panel active" aria-label="Ежедневные казни">
-    <div class="behead-header">
-      <h2>⚔️ Ежедневные казни</h2>
-    </div>
-    <div class="behead-feed" id="beheading-feed"></div>
-  </section>
-
-  <!-- TAB 2 -->
-  <section id="tab-members" class="tab-panel" aria-label="Участники">
+  <section id="tab-members" class="tab-panel active" aria-label="Участники">
     <div class="members-grid">
-
       <div class="member-card" data-member="Caleb">
         <div class="member-avatar" style="background: linear-gradient(135deg,#7c5cfc,#4a3abf)">C</div>
         <div class="member-flag">🇿🇦</div>
@@ -84,13 +75,19 @@
     </div>
   </section>
 
+  <!-- TAB 2 -->
+  <section id="tab-intake" class="tab-panel" aria-label="Офис приема">
+    <div class="intake-container" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px; text-align: center;">
+      <h2 style="margin-bottom: 25px;">📥 Офис приема</h2>
+      <a href="https://forms.gle/A4mvK2NWsHBbTmQE8" target="_blank" class="btn-vault">⚡ Открыть портал подачи</a>
+      </div>
+  </section>
+
   <!-- TAB 3 -->
-  <section id="tab-vault" class="tab-panel" aria-label="Хранилище">
-    <div class="vault-terminal">
-      <div class="vault-icons" aria-hidden="true">🔒 ⚠️ 🔒 ⚠️ 🔒</div>
-      <div class="vault-title">Засекреченные данные</div>
-      <div class="vault-sub">[ ХРАНИЛИЩЕ УНИКАЛЬНЫХ ЭСТОНСКИХ ИМЁН ]<br/>// УРОВЕНЬ ДОСТУПА: УЛЬТРА-ЗАГАДКА //</div>
-      <button id="btn-vault" class="btn-vault">⚡ Получить доступ к загадке</button>
+  <section id="tab-archive" class="tab-panel" aria-label="Библиотека">
+    <div class="archive-container">
+      <h2>📚 Библиотека</h2>
+      <div id="archive-list" class="archive-list">Загрузка архивов...</div>
     </div>
   </section>
 
@@ -116,7 +113,7 @@
     </div>
 
     <div class="clock-item">
-      <span class="clock-city">Таллин</span>
+      <span class="clock-city">Антсла</span>
       <span class="clock-time" id="clock-et">--:--:--</span>
       <span class="clock-condition">🌧 Лёгкий дождь</span>
       <span class="clock-temp">15°C · Ощущается 12°C</span>
@@ -145,3 +142,4 @@
 <script src="../script.js"></script>
 </body>
 </html>
+

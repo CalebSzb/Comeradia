@@ -8,113 +8,6 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
   });
 });
 
-/* ─── BEHEADINGS — read from data/beheadings.json (written by GitHub Actions) */
-const BEHEAD_PHRASE = {
-  en: 'has been beheaded.',
-  ru: 'был обезголовлен.',
-  et: 'pea lõigati maha.',
-};
-
-function getLang() {
-  return document.documentElement.lang || 'en';
-}
-
-function formatCount(name, count) {
-  const lang = getLang();
-  if (lang === 'ru') {
-    const m10 = count % 10, m100 = count % 100;
-    if (m10 === 1 && m100 !== 11)                            return `Обезглавлен ${count} раз`;
-    if (m10 >= 2 && m10 <= 4 && (m100 < 10 || m100 >= 20)) return `Обезглавлен ${count} раза`;
-    return `Обезглавлен ${count} раз`;
-  }
-  if (lang === 'et') return `Hukatud ${count} korda`;
-  return `Beheaded ${count} Time${count === 1 ? '' : 's'}`;
-}
-
-function renderFeedEntry(entry) {
-  const feed = document.getElementById('beheading-feed');
-  if (!feed) return;
-  const lang   = getLang();
-  const phrase = BEHEAD_PHRASE[lang] || BEHEAD_PHRASE.en;
-  const name   = typeof entry === 'string' ? entry : entry.name;
-  const ts     = entry.ts ? new Intl.DateTimeFormat([], {
-    timeZone: 'Australia/Melbourne',
-    hour: 'numeric', minute: '2-digit', hour12: true,
-  }).format(new Date(entry.ts)) + ' (Melbourne)' : '';
-
-  const div = document.createElement('div');
-  div.className = 'behead-entry';
-  div.innerHTML = `
-    <span class="behead-icon">⚔️</span>
-    <div class="behead-body">
-      <span class="behead-text"><strong>${name}</strong> ${phrase}</span>
-      ${ts ? `<span class="behead-ts">${ts}</span>` : ''}
-    </div>`;
-  feed.appendChild(div);
-}
-
-function renderMemberBadge(name, count) {
-  if (count <= 0) return;
-  const card = document.querySelector(`.member-card[data-member="${name}"]`);
-  if (!card) return;
-  let badge = card.querySelector('.member-behead-count');
-  if (!badge) {
-    badge = document.createElement('div');
-    badge.className = 'member-behead-count';
-    card.appendChild(badge);
-  }
-  badge.textContent = `⚔️ ${formatCount(name, count)}`;
-}
-
-function applyData(data) {
-  // render feed (newest first — log is already stored newest-first)
-  const feed = document.getElementById('beheading-feed');
-  if (feed) feed.innerHTML = '';
-  (data.log || []).forEach(entry => renderFeedEntry(entry));
-
-  // render member badges
-  Object.entries(data.counts || {}).forEach(([name, count]) => {
-    renderMemberBadge(name, count);
-  });
-}
-
-// resolve the correct path to data/beheadings.json regardless of subfolder depth
-function dataPath() {
-  // pages at /ru/ or /et/ are one level deep — go up one
-  const depth = window.location.pathname.replace(/\/$/, '').split('/').length - 1;
-  // on GitHub Pages the root is at depth 1 (/<repo>/), subpages at depth 2
-  // locally depth varies; simplest heuristic: if pathname contains /ru/ or /et/ prepend ../
-  if (/\/(ru|et)(\/|$)/.test(window.location.pathname)) {
-    return '../data/beheadings.json';
-  }
-  return './data/beheadings.json';
-}
-
-fetch(dataPath() + '?t=' + Date.now())
-  .then(r => r.json())
-  .then(data => applyData(data))
-  .catch(() => {
-    // fallback for local file:// development — read from localStorage
-    const fallback = {
-      counts: {
-        Caleb: parseInt(localStorage.getItem('behead_Caleb') || '0'),
-        Rosa:  parseInt(localStorage.getItem('behead_Rosa')  || '0'),
-        Jacob: parseInt(localStorage.getItem('behead_Jacob') || '0'),
-        Est:   parseInt(localStorage.getItem('behead_Est')   || '0'),
-      },
-      log: JSON.parse(localStorage.getItem('behead_log') || '[]'),
-    };
-    applyData(fallback);
-  });
-
-// re-fetch every 5 minutes so an open tab stays current without a reload
-setInterval(() => {
-  fetch(dataPath() + '?t=' + Date.now())
-    .then(r => r.json())
-    .then(data => applyData(data))
-    .catch(() => {});
-}, 5 * 60 * 1000);
-
 /* ─── VAULT DENIAL ───────────────────────────────────────────────────────── */
 const MESSAGES = [
   '🚨 ACCESS DENIED 🚨',
@@ -136,13 +29,77 @@ document.getElementById('btn-vault')?.addEventListener('click', () => {
 document.getElementById('btn-dismiss')?.addEventListener('click', () => overlay.classList.remove('show'));
 overlay?.addEventListener('click', e => { if (e.target === overlay) overlay.classList.remove('show'); });
 
-/* ─── LIVE CLOCKS ────────────────────────────────────────────────────────── */
+/* ─── LIBRARY ARCHIVE ────────────────────────────────────────────────────── */
+async function loadArchive() {
+  const listEl = document.getElementById('archive-list');
+  if (!listEl) return;
+  try {
+    const url = (window.location.pathname.includes('/ru/') || window.location.pathname.includes('/et/'))
+      ? '../data/archive.json' : './data/archive.json';
+    const response = await fetch(url + '?t=' + Date.now());
+      const data = await response.json();
+
+    if (data.files && data.files.length > 0) {
+      listEl.innerHTML = data.files.map(f => `
+        <div class="archive-item" style="margin-bottom: 10px;">
+          <a href="${f.url}" target="_blank" class="btn-vault" style="text-decoration:none; display:inline-block; padding: 10px 20px;">📄 ${f.name}</a>
+        </div>
+      `).join('');
+    } else {
+      listEl.innerHTML = '<p>Archive is empty.</p>';
+    }
+    } catch (e) {
+    console.error('Archive loading failed', e);
+    listEl.innerHTML = '<p>Could not load library.</p>';
+    }
+}
+loadArchive();
+
+/* ─── LIVE CLOCKS & WEATHER ──────────────────────────────────────────────── */
 const ZONES = [
-  { id: 'clock-za', tz: 'Africa/Johannesburg' },
-  { id: 'clock-et', tz: 'Europe/Tallinn'       },
-  { id: 'clock-au', tz: 'Australia/Melbourne'  },
-  { id: 'clock-fi', tz: 'Europe/Helsinki'      },
+  { id: 'clock-za', tz: 'Africa/Johannesburg', lat: -33.9249, lon:  18.4241 },
+  { id: 'clock-et', tz: 'Europe/Tallinn',       lat:  57.8340, lon:  26.5360 },
+  { id: 'clock-au', tz: 'Australia/Melbourne',  lat: -37.8136, lon: 144.9631 },
+  { id: 'clock-fi', tz: 'Europe/Helsinki',      lat:  59.9793, lon:  23.6815 },
 ];
+
+function wmoLabel(code) {
+  if (code === 0)  return '☀️ Clear';
+  if (code <= 2)   return '🌤️ Partly Cloudy';
+  if (code === 3)  return '☁️ Overcast';
+  if (code <= 49)  return '🌫️ Fog';
+  if (code <= 57)  return '🌧️ Drizzle';
+  if (code <= 67)  return '🌧️ Rain';
+  if (code <= 77)  return '🌨️ Snow';
+  if (code <= 82)  return '🌦️ Showers';
+  if (code <= 86)  return '🌨️ Snow Showers';
+  if (code <= 99)  return '⚡ Thunderstorm';
+  return '🌡️ Unknown';
+}
+
+async function fetchWeather() {
+  await Promise.all(ZONES.map(async z => {
+    try {
+      const url  = `https://api.open-meteo.com/v1/forecast?latitude=${z.lat}&longitude=${z.lon}` +
+        `&current=temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,weather_code` +
+        `&wind_speed_unit=kmh&timezone=${encodeURIComponent(z.tz)}`;
+      const response = await fetch(url);
+      if (!response.ok) throw new Error('Network error');
+      const data = await response.json();
+      const c    = data.current;
+      const item = document.getElementById(z.id)?.closest('.clock-item');
+      if (!item) return;
+      item.querySelector('.clock-temp').textContent      = `${Math.round(c.temperature_2m)}°C · Feels ${Math.round(c.apparent_temperature)}°C`;
+      item.querySelector('.clock-condition').textContent = wmoLabel(c.weather_code);
+      item.querySelector('.clock-details').innerHTML     = `<span>💧 ${c.relative_humidity_2m}%</span><span>💨 ${Math.round(c.wind_speed_10m)} km/h</span>`;
+    } catch (e) {
+      console.error(`Weather fetch failed for ${z.id}:`, e);
+    }
+  }));
+}
+
+fetchWeather();
+setInterval(fetchWeather, 15 * 60 * 1000);
 
 const displayFmt = tz => new Intl.DateTimeFormat([], {
   timeZone: tz, hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true,
@@ -158,3 +115,4 @@ function tickClocks() {
 
 tickClocks();
 setInterval(tickClocks, 1000);
+

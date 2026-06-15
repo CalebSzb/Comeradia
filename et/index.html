@@ -36,23 +36,14 @@
 <main>
 
   <nav class="tab-nav" aria-label="Sektsioonid">
-    <button class="tab-btn active" data-tab="tab-behead">⚔️ Igapäevased hukkamised</button>
-    <button class="tab-btn"        data-tab="tab-members">👥 Liikmed</button>
-    <button class="tab-btn"        data-tab="tab-vault">🔍 Uuri Esti nime</button>
+    <button class="tab-btn active" data-tab="tab-members">👥 Liikmed</button>
+    <button class="tab-btn"        data-tab="tab-intake">📥 Vastuvõtupunkt</button>
+    <button class="tab-btn"        data-tab="tab-archive">📚 Raamatukogu</button>
   </nav>
 
   <!-- TAB 1 -->
-  <section id="tab-behead" class="tab-panel active" aria-label="Igapäevased hukkamised">
-    <div class="behead-header">
-      <h2>⚔️ Igapäevased hukkamised</h2>
-    </div>
-    <div class="behead-feed" id="beheading-feed"></div>
-  </section>
-
-  <!-- TAB 2 -->
-  <section id="tab-members" class="tab-panel" aria-label="Liikmed">
+  <section id="tab-members" class="tab-panel active" aria-label="Liikmed">
     <div class="members-grid">
-
       <div class="member-card" data-member="Caleb">
         <div class="member-avatar" style="background: linear-gradient(135deg,#7c5cfc,#4a3abf)">C</div>
         <div class="member-flag">🇿🇦</div>
@@ -84,13 +75,19 @@
     </div>
   </section>
 
+  <!-- TAB 2 -->
+  <section id="tab-intake" class="tab-panel" aria-label="Vastuvõtupunkt">
+    <div class="intake-container" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px; text-align: center;">
+      <h2 style="margin-bottom: 25px;">📥 Vastuvõtupunkt</h2>
+      <a href="https://forms.gle/A4mvK2NWsHBbTmQE8" target="_blank" class="btn-vault">⚡ Ava esitamise portaal</a>
+      </div>
+  </section>
+
   <!-- TAB 3 -->
-  <section id="tab-vault" class="tab-panel" aria-label="Hoidla">
-    <div class="vault-terminal">
-      <div class="vault-icons" aria-hidden="true">🔒 ⚠️ 🔒 ⚠️ 🔒</div>
-      <div class="vault-title">Salastatud andmed</div>
-      <div class="vault-sub">[ UNIKAALSE EESTI EESNIME HOIDLA ]<br/>// TURVAKLIRENS: ULTRA-MÕISTATUS //</div>
-      <button id="btn-vault" class="btn-vault">⚡ Juurdepääs mõistatusele</button>
+  <section id="tab-archive" class="tab-panel" aria-label="Raamatukogu">
+    <div class="archive-container">
+      <h2>📚 Raamatukogu</h2>
+      <div id="archive-list" class="archive-list">Laadin arhiive...</div>
     </div>
   </section>
 
@@ -116,7 +113,7 @@
     </div>
 
     <div class="clock-item">
-      <span class="clock-city">Tallinn</span>
+      <span class="clock-city">Antsla</span>
       <span class="clock-time" id="clock-et">--:--:--</span>
       <span class="clock-condition">🌧 Kerge vihm</span>
       <span class="clock-temp">15°C · Tundub 12°C</span>
@@ -145,3 +142,4 @@
 <script src="../script.js"></script>
 </body>
 </html>
+
